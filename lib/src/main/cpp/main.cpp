@@ -150,7 +150,8 @@ void inject(const char *gameDataDir) {
     auto input_handler = DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
     DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
     // HOOK EGLSWAPBUFFER
-    DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
+    auto egl_handler = DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
+    DobbyHook((void *)egl_handler, (void *)eglSwapBufferHook, (void **)eglSwapBufferOrig);
 }
 // -- END INJECT
 
