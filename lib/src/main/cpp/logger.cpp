@@ -13,10 +13,16 @@ void logger(const char *outDir) {
     outStream << logMessage.str();
     outStream.close();
 }
-void flog(const char* logMessage) { // Change to const char*
-    std::string logOutPath = std::string(gameDataDir).append("/files/log.txt"); // Add semicolon
-    std::ofstream outStream(logOutPath, std::ios::app); // Append to the file
-    outStream << logMessage << std::endl; // Add a newline at the end of each log message
+
+#define gamePackage "com.unity.test"
+
+void flog(const char* logMessage) { 
+    std::string appData = "/data/data/";
+    std::string pckg = gamePackage;
+    std::string outPath = appData + pckg;
+    std::string logOutPath = outPath + "/files/log.txt"; 
+    std::ofstream outStream(logOutPath, std::ios::app); 
+    outStream << logMessage << std::endl; 
     outStream.close();
 }
 // -- END LOGGER
