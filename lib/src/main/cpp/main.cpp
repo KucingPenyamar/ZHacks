@@ -143,7 +143,7 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
     eglQuerySurface(display, surface, EGL_HEIGHT, &height);
 	if (!setupGui) {
 		drawImGui();
-		setupImGui = true;
+		setupGui = true;
 	}
 	ImGuiIO &io = GetIO();
 	ImGui_ImplOpenGL3_NewFrame();
