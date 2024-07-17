@@ -3,5 +3,5 @@
 
 const char *targetProcessName = "com.unity.test";
 void inject(const char *gameDataDir);
-void logger(const char *outDir)
+void logger(const char *outDir);
 #endif
