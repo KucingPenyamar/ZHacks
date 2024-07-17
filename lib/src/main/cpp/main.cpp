@@ -8,6 +8,7 @@
 #include <thread>
 #include <dlfcn>
 #include <cinttypes>
+#include <string>
 #include "zygisk.hpp"
 // ImGui
 #include "imgui.h"
