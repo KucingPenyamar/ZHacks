@@ -184,14 +184,6 @@ void inject(const char *gameDataDir, void *data, size_t length) {
     int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
     DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name, (dobby_dummy_func_t *)&orig_##name);            
      */
-    // HOOK INPUT SYMBOL
-    auto input_handler = DobbySymbolResolver("/system/lib/libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
-    if (NULL != input_handler) {
-        flog("\nlibinput.so found!");
-        DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
-    } else {
-        flog("\nlibinput.so not found!");
-    }
     // HOOK EGLSWAPBUFFER
     auto egl_handler = DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
     if (NULL != egl_handler) {
@@ -199,6 +191,14 @@ void inject(const char *gameDataDir, void *data, size_t length) {
         flog("\nlibEGL.so success!");
     } else {
         flog("\nlibEGL.so error!");
+    }
+    // HOOK INPUT SYMBOL
+    auto input_handler = DobbySymbolResolver("/system/lib/libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
+    if (NULL != input_handler) {
+        flog("\nlibinput.so found!");
+        DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
+    } else {
+        flog("\nlibinput.so not found!");
     }
 }
 // -- END INJECT
