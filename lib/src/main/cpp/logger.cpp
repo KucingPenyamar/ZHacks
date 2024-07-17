@@ -13,10 +13,9 @@ void logger(const char *outDir) {
     outStream << logMessage.str();
     outStream.close();
 }
-void flog(const char *gameDataDir, const char *logMessage) {
-    std::string outDir = gameDataDir;
-    auto outLogPath = std::string(outDir).append("/files/zhacks_log.txt");
-    std::ofstream outStream(outLogPath, std::ios::app); // Append to the file
+void flog(const char* logMessage) { // Change to const char*
+    std::string logOutPath = std::string(gameDataDir).append("/files/log.txt"); // Add semicolon
+    std::ofstream outStream(logOutPath, std::ios::app); // Append to the file
     outStream << logMessage << std::endl; // Add a newline at the end of each log message
     outStream.close();
 }
