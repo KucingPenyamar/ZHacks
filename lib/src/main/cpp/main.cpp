@@ -8,7 +8,7 @@
 #include <dlfcn.h>
 #include <cinttypes>
 #include "zygisk.hpp"
-#include <sys/sys/stat.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 // ImG
 #include "imgui.h"
