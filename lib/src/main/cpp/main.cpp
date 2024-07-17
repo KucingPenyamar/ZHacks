@@ -15,6 +15,7 @@
 #include <sys/types.h>
 // ImG
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
 // EGL
@@ -109,6 +110,7 @@ void MainMenu() {
     static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     {
     	Begin("Mod Menu");
+    	flog("\nBegin() is Called!");
     	ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_FittingPolicyResizeDown;
     	if (BeginTabBar("Menu", tabBarFlags)) {
     		if (BeginTabItem("Player")) {
@@ -118,6 +120,7 @@ void MainMenu() {
     		EndTabItem();
     	}
         End();
+        flog("\nEnd() from imgui called!");
     }
 }
 void drawImGui() {
@@ -129,6 +132,7 @@ void drawImGui() {
 	ImGui_ImplOpenGL3_Init("#version 300");
 	StyleColorsDark(); // Default
 	GetStyle().ScaleAllSizes(10.0f);
+	flog("End of drawImGui()");
 }
 
 // -- HOOK IMGUI
@@ -137,11 +141,19 @@ void drawImGui() {
 /* android::InputConsumer::initializeMotionEvent(android::MotionEvent*, android::InputMessage const*)
  * void InputConsumer::initializeMotionEvent(MotionEvent* event, const InputMessage* msg)
  */
+ /*
 void (*inputOrig)(void* thiz, void* event, void* msg);
 void inputHook(void *thiz, void *event, void *msg) {
     inputOrig(thiz, event, msg);
     ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)thiz);
-} 
+}
+*/
+hook_input(void, Input, void *thiz, void *event, void *msg) {
+    inputOrig(thiz, event, msg) 
+    ImGui_ImplAndtoid_HandleInputEvent((AInputEvent *)thiz);
+    return;
+}
+*/
 // EGLSWAPBUFFER HANDLER
 EGLBoolean (*eglSwapBufferOrig)(EGLDisplay display, EGLSurface surface);
 EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
