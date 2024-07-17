@@ -20,6 +20,7 @@
 #include <GLES3/gl3.h>
 // Dobby
 #include "dobby.h"
+#include "logger.h"
 
 using zygisk::Api;
 using zygisk::AppSpecializeArgs;
@@ -29,15 +30,13 @@ using zygisk::ServerSpecializeArgs;
 
 static int width, height;
 
-// -- ZYGISK
-
+// -- ZYGISK MODULE
 class MyModule : public zygisk::ModuleBase {
 public:
     void onLoad(Api *api, JNIEnv *env) override {
         this->api = api;
         this->env = env;
     }
-
     void preAppSpecialize(AppSpecializeArgs *args) override {
         // Use JNI to fetch our process name
         const char *processName = env->GetStringUTFChars(args->nice_name, nullptr);
@@ -46,15 +45,12 @@ public:
         env->ReleaseStringUTFChars(args->nice_name, processName);
         env->ReleaseStringUTFChars(args->app_data_dir, appDataDir);
     }
-
     void postAppSpecialize(const AppSpecializeArgs *) override {
         if (createThread) {
             std::thread hackThread(inject, gameDataDir);
             LOGD("Thread created");
-        }
-        
+        }   
     }
-
 private:
     Api *api;
     JNIEnv *env;
@@ -62,7 +58,6 @@ private:
     char *gameDataDir;
 
     void preSpecialize(const char *processName, const char *appDataDir) {
-        
         // Check is the current process is match with targeted process
         if (strcmp(processName, targetProcessName) == 0) {
             LOGD("Success, setup a thread");
@@ -74,19 +69,17 @@ private:
             LOGD("Skip, process unknown");
         }
     }
-
 };
 
 // Register our module class
 REGISTER_ZYGISK_MODULE(MyModule)
-
-// -- end ZYGISK
+// -- END ZYGISK
 
 // Draw ImGui Menu
 using namespace ImGui;
 bool setupImGui;
 bool exampleCheckbox;
-void modMenu() {
+void mainMenu() {
 	Begin("Mod Menu");
 	ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_FittingPolicyResizeDown;
 	if (BeginTabBar("Menu", tabBarFlags)) {
@@ -118,7 +111,6 @@ void inputHook(void *thiz, void *event, void *msg) {
     inputOrig(thiz, event, msg);
     ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)thiz);
 } 
-
 // EGLSWAPBUFFER HANDLER
 EGLBoolean (*eglSwapBufferOrig)(EGLDisplay display, EGLSurface surface);
 EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
@@ -131,7 +123,7 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 	ImGuiIO &io = GetIO();
 	ImGui_ImplOpenGL3_NewFrame();
 	NewFrame();
-	modMenu();
+	mainMenu();
 	EndFrame();
 	Render();
 	glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -154,15 +146,3 @@ void inject(const char *gameDataDir) {
     DobbyHook((void *)egl_handler, (void *)eglSwapBufferHook, (void **)eglSwapBufferOrig);
 }
 // -- END INJECT
-
-// -- LOGGER
-void logger(const char *outDir) {
-    std::stringstream logMessage;
-    logMessage << "Script Started";
-    // logToFile = logMessage.str();
-    auto outLogPath = std::string(outDir).append("/files/zhacks_log.txt");
-    std::ofstream outStream(outLogPath);
-    outStream << logMessage.str();
-    outStream.close();
-}
-// -- END LOGGER
