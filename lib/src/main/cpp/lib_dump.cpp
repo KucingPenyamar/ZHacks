@@ -1,5 +1,3 @@
 #include "lib_dump.h"
 
-void dumpLib() {
-	
-}
+void start_dump() {}
