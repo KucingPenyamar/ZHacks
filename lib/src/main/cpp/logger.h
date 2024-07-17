@@ -2,6 +2,6 @@
 #define LOG_TO_FILE
 
 void logger(const char *outDir);
-void flog(const char *gameDataDir, const char *logMessage);
+void flog(const char* logMessage);
 
 #endif
