@@ -9,6 +9,7 @@
 #include <dlfcn>
 #include <cinttypes>
 #include <string>
+#include <fstream>
 #include "zygisk.hpp"
 // ImGui
 #include "imgui.h"
