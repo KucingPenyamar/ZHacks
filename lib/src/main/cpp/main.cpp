@@ -149,6 +149,12 @@ void inject(const char *gameDataDir) {
 
 // -- LOGGER
 void logger(const char *outDir) {
-    
+    std::stringstream logMessage;
+    logMessage << "Log Started";
+    // logToFile = logMessage.str();
+    auto outLogPath = std::string(outDir).append("/files/customlog.txt");
+    std::ofstream logToFile(outLogPath);
+    logToFile << logMessage.str();
+    logToFile.close();
 }
 // -- END LOGGER
