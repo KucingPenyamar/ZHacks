@@ -153,7 +153,7 @@ void logger(const char *outDir) {
     logMessage << "Log Started";
     // logToFile = logMessage.str();
     auto outLogPath = std::string(outDir).append("/files/customlog.txt");
-    // std::ofstream logToFile(outLogPath);
+    std::ofstream logToFile(outLogPath);
     logToFile << logMessage.str();
     logToFile.close();
 }
