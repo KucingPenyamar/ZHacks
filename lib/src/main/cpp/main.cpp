@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <android/log.h>
 #include <cstring>
+#include <sstream>
 #include <thread>
 #include "zygisk.hpp"
 // ImGui
@@ -135,7 +136,8 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 }
 
 // INJECT OUR MENU
-void inject(const char *targetProcessName) {
+void inject(const char *gameDataDir) {
+    logger(gameDataDir);
     // HOOK INPUT SYMBOL
     DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
 
@@ -144,3 +146,9 @@ void inject(const char *targetProcessName) {
 }
 
 // -- END HOOK IMGUI
+
+// -- LOGGER
+void logger(const char *outDir) {
+    
+}
+// -- END LOGGER
