@@ -158,9 +158,9 @@ void inject(const char *gameDataDir) {
 // -- LOGGER
 void logger(const char *outDir) {
     std::stringstream logMessage;
-    logMessage << "Log Started";
+    logMessage << "Script Started";
     // logToFile = logMessage.str();
-    auto outLogPath = std::string(outDir).append("/files/customlog.txt");
+    auto outLogPath = std::string(outDir).append("/files/zhacks_log.txt");
     std::ofstream outStream(outLogPath);
     outStream << logMessage.str();
     outStream.close();
