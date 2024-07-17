@@ -98,18 +98,22 @@ REGISTER_ZYGISK_MODULE(MyModule)
 
 // Draw ImGui Menu
 using namespace ImGui;
-bool setupImGui;
+bool setupGui;
 bool exampleCheckbox;
-void mainMenu() {
-	Begin("Mod Menu");
-	ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_FittingPolicyResizeDown;
-	if (BeginTabBar("Menu", tabBarFlags)) {
-		if (BeginTabItem("Player")) {
-			Checkbox("This is checkbox", &exampleCheckbox);
-			EndTabItem();
-		}
-		EndTabItem();
-	}
+void MainMenu() {
+    static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    {
+    	Begin("Mod Menu");
+    	ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_FittingPolicyResizeDown;
+    	if (BeginTabBar("Menu", tabBarFlags)) {
+    		if (BeginTabItem("Player")) {
+    			Checkbox("This is checkbox", &exampleCheckbox);
+    			EndTabItem();
+    		}
+    		EndTabItem();
+    	}
+        End();
+    }
 }
 void drawImGui() {
 	IMGUI_CHECKVERSION();
@@ -137,14 +141,14 @@ EGLBoolean (*eglSwapBufferOrig)(EGLDisplay display, EGLSurface surface);
 EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
     eglQuerySurface(display, surface, EGL_WIDTH, &width);
     eglQuerySurface(display, surface, EGL_HEIGHT, &height);
-	if (!setupImGui) {
+	if (!setupGui) {
 		drawImGui();
 		setupImGui = true;
 	}
 	ImGuiIO &io = GetIO();
 	ImGui_ImplOpenGL3_NewFrame();
 	NewFrame();
-	mainMenu();
+	MainMenu();
 	EndFrame();
 	Render();
 	glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
