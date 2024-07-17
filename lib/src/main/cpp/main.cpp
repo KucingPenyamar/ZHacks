@@ -24,6 +24,8 @@
 #include "dobby.h"
 #include "logger.h"
 
+int width, height;
+
 using zygisk::Api;
 using zygisk::AppSpecializeArgs;
 using zygisk::ServerSpecializeArgs;
