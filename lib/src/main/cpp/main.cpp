@@ -53,6 +53,8 @@ private:
     JNIEnv *env;
     bool createThread = false;
     char *gameDataDir;
+    void *data;
+    size_t length;
 
     void preSpecialize(const char *processName, const char *appDataDir) {
         // Check is the current process is match with targeted process
@@ -61,6 +63,12 @@ private:
             createThread = true;
             gameDataDir = new char[strlen(appDataDir) + 1];
             strcpy(gameDataDir, appDataDir);
+            if defined(__x86_64__)
+                auto path = "zygisk/arm64-v8a.so";
+            #endif 
+            if defined(__i386__)
+                auto path = "zygisk/armeabi-v7a.so";
+            #endif
 
         } else {
             LOGD("Skip, process unknown");
