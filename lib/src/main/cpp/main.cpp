@@ -7,6 +7,7 @@
 #include <sstream>
 #include <thread>
 #include <dlfcn>
+#include <cinttypes>
 #include "zygisk.hpp"
 // ImGui
 #include "imgui.h"
