@@ -79,7 +79,7 @@ private:
                 if (fd != -1) {
                     struct stat sb{};
                     fstat(fd, &sb);
-                    length = sb.st_size();
+                    length = sb.st_size;
                     data = mmap(nullptr, length, PROT_READ, MAP_PRIVATE, fd, 0);
                      close(fd);
                 } 
