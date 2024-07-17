@@ -1,4 +1,7 @@
 #include "logger.h"
+#include "string"
+#include "fstream"
+#include "sstream"
 
 // -- LOGGER
 void logger(const char *outDir) {

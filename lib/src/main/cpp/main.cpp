@@ -4,12 +4,9 @@
 #include <fcntl.h>
 #include <android/log.h>
 #include <cstring>
-#include <sstream>
 #include <thread>
 #include <dlfcn.h>
 #include <cinttypes>
-#include <string>
-#include <fstream>
 #include "zygisk.hpp"
 // ImGui
 #include "imgui.h"
