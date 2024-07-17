@@ -165,7 +165,7 @@ void inject(const char *gameDataDir, void *data, size_t length) {
     DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name, (dobby_dummy_func_t *)&orig_##name);            
      */
     // HOOK INPUT SYMBOL
-    auto input_handler = DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
+    auto input_handler = DobbySymbolResolver("/system/lib/libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
     DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
     // HOOK EGLSWAPBUFFER
     auto egl_handler = DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
