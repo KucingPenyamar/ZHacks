@@ -8,7 +8,9 @@
 #include <dlfcn.h>
 #include <cinttypes>
 #include "zygisk.hpp"
-// ImGui
+#include <sys/sys/stat.h>
+#include <fcntl.h>
+// ImG
 #include "imgui.h"
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
@@ -63,13 +65,16 @@ private:
             createThread = true;
             gameDataDir = new char[strlen(appDataDir) + 1];
             strcpy(gameDataDir, appDataDir);
-            if defined(__x86_64__)
+            #if defined(__x86_64__)
                 auto path = "zygisk/arm64-v8a.so";
             #endif 
-            if defined(__i386__)
+            #if defined(__i386__)
                 auto path = "zygisk/armeabi-v7a.so";
             #endif
-
+            #if defined(__i386__) || defined(__x86_64__)
+                int dirfd = api->getModuleDir();
+                int fd = openat(dirfd, path, O_RDONLY);
+            #endif
         } else {
             LOGD("Skip, process unknown");
         }
