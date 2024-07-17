@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <sys/types.h>
 // ImG
 #include "imgui.h"
 #include "imgui_impl_android.h"
