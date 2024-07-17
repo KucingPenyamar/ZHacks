@@ -149,7 +149,7 @@ void inputHook(void *thiz, void *event, void *msg) {
 }
 */
 hook_input(void, Input, void *thiz, void *event, void *msg) {
-    inputOrig(thiz, event, msg) 
+    origInput(thiz, event, msg) 
     ImGui_ImplAndtoid_HandleInputEvent((AInputEvent *)thiz);
     return;
 }
@@ -196,7 +196,7 @@ void inject(const char *gameDataDir, void *data, size_t length) {
     auto input_handler = DobbySymbolResolver("/system/lib/libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
     if (NULL != input_handler) {
         flog("\nlibinput.so found!");
-        DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
+        DobbyHook((void *)input_handler, (void *)myInput, (void**)&origInput);
     } else {
         flog("\nlibinput.so not found!");
     }
