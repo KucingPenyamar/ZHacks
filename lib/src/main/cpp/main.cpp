@@ -142,14 +142,17 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 // INJECT OUR MENU
 void inject(const char *gameDataDir) {
     logger(gameDataDir);
+    /* Dobby api
+    int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
+    DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name, (dobby_dummy_func_t *)&orig_##name);            
+     */
     // HOOK INPUT SYMBOL
-    DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
-
+    input_handler = DobbySymbolResolver("libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
+    DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
     // HOOK EGLSWAPBUFFER
     DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
 }
-
-// -- END HOOK IMGUI
+// -- END INJECT
 
 // -- LOGGER
 void logger(const char *outDir) {
