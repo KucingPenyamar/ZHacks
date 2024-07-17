@@ -1,4 +1,5 @@
 #include "main.h"
+#include "lib_dump.h"
 #include <cstdlib>
 #include <unistd.h>
 #include <fcntl.h>

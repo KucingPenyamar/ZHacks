@@ -40,7 +40,7 @@ set(DOBBY_LIB ${CMAKE_CURRENT_SOURCE_DIR}/libs/${CMAKE_ANDROID_ARCH_ABI}/libdobb
 # or SHARED, and provides the relative paths to its source code.
 add_library(${CMAKE_PROJECT_NAME} SHARED
         # List C/C++ source files with relative paths to this CMakeLists.txt.
-        main.cpp logger.cpp
+        main.cpp logger.cpp lib_dump.cpp
         ${IMGUI_SRC}
 )
 
