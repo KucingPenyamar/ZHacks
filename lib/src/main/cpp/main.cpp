@@ -38,6 +38,7 @@ public:
     void onLoad(Api *api, JNIEnv *env) override {
         this->api = api;
         this->env = env;
+        flog("\nonLoad()");
     }
     void preAppSpecialize(AppSpecializeArgs *args) override {
         // Use JNI to fetch our process name
@@ -46,8 +47,10 @@ public:
         preSpecialize(processName, appDataDir);
         env->ReleaseStringUTFChars(args->nice_name, processName);
         env->ReleaseStringUTFChars(args->app_data_dir, appDataDir);
+        flog("\preAppSpecialize()");
     }
     void postAppSpecialize(const AppSpecializeArgs *) override {
+        flog("\npostAppSpecialize()");
         if (createThread) {
             std::thread mainThread(inject, gameDataDir, data, length);
             mainThread.detach();
@@ -63,6 +66,7 @@ private:
     size_t length;
 
     void preSpecialize(const char *processName, const char *appDataDir) {
+        flog("\npreSpecialize()");
         // Check is the current process is match with targeted process
         if (strcmp(processName, targetProcessName) == 0) {
             LOGD("Success, setup a thread");
@@ -101,6 +105,7 @@ using namespace ImGui;
 bool setupGui;
 bool exampleCheckbox;
 void MainMenu() {
+    flog("Menu is Called!");
     static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     {
     	Begin("Mod Menu");
@@ -116,6 +121,7 @@ void MainMenu() {
     }
 }
 void drawImGui() {
+    flog("\ndrawImGui() called!");
 	IMGUI_CHECKVERSION();
 	CreateContext();
 	ImGuiIO &io = GetIO();
@@ -139,6 +145,7 @@ void inputHook(void *thiz, void *event, void *msg) {
 // EGLSWAPBUFFER HANDLER
 EGLBoolean (*eglSwapBufferOrig)(EGLDisplay display, EGLSurface surface);
 EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
+    flog("\nEntering eglSwapBuffer");
     eglQuerySurface(display, surface, EGL_WIDTH, &width);
     eglQuerySurface(display, surface, EGL_HEIGHT, &height);
 	if (!setupGui) {
@@ -159,7 +166,7 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 // INJECT OUR MENU
 void inject(const char *gameDataDir, void *data, size_t length) {
     logger(gameDataDir);
-    flog("Inject()");
+    flog("\n\nMain Thread Called!\n\n");
     
     // start_dump(gameDataDir);
     /* Dobby api
@@ -168,9 +175,19 @@ void inject(const char *gameDataDir, void *data, size_t length) {
      */
     // HOOK INPUT SYMBOL
     auto input_handler = DobbySymbolResolver("/system/lib/libinput.so", "_ZN7android13InputConsumer21initializeMotionEventEPNS_11MotionEventEPKNS_12InputMessageE");
+    if (NULL != input_handler) {
+        flog("\nlibinput.so found!");
+    } else {
+        flog("\nlibinput.so not found!");
+    }
     DobbyHook((void *)input_handler, (void *)inputHook, (void**)inputOrig);
     // HOOK EGLSWAPBUFFER
     auto egl_handler = DobbySymbolResolver("libEGL.so", "eglSwapBuffers");
+    if (NULL != egl_handler) {
+        flog("\nlibEGL.so success!");
+    } else {
+        flog("\nlibEGL.so error!");
+    }
     DobbyHook((void *)egl_handler, (void *)eglSwapBufferHook, (void **)eglSwapBufferOrig);
 }
 // -- END INJECT
