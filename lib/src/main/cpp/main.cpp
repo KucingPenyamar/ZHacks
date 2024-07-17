@@ -6,7 +6,7 @@
 #include <cstring>
 #include <sstream>
 #include <thread>
-#include <dlfcn>
+#include <dlfcn.h>
 #include <cinttypes>
 #include <string>
 #include <fstream>
