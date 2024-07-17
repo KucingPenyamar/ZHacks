@@ -48,7 +48,8 @@ public:
     }
     void postAppSpecialize(const AppSpecializeArgs *) override {
         if (createThread) {
-            std::thread hackThread(inject, gameDataDir);
+            std::thread mainThread(inject, gameDataDir, data, length);
+            mainThread.detach();
             LOGD("Thread created");
         }   
     }
@@ -151,7 +152,7 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 }
 
 // INJECT OUR MENU
-void inject(const char *gameDataDir) {
+void inject(const char *gameDataDir, void *data, size_t length) {
     logger(gameDataDir);
     start_dump(gameDataDir);
     /* Dobby api
