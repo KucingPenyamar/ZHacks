@@ -155,7 +155,7 @@ EGLBoolean eglSwapBufferHook(EGLDisplay display, EGLSurface surface) {
 // INJECT OUR MENU
 void inject(const char *gameDataDir, void *data, size_t length) {
     logger(gameDataDir);
-    start_dump(gameDataDir);
+    // start_dump(gameDataDir);
     /* Dobby api
     int DobbyHook(void *address, dobby_dummy_func_t replace_func, dobby_dummy_func_t *origin_func);
     DobbyHook(sym_addr, (dobby_dummy_func_t)fake_##name, (dobby_dummy_func_t *)&orig_##name);            
