@@ -6,6 +6,7 @@
 #include <cstring>
 #include <sstream>
 #include <thread>
+#include <dlfcn>
 #include "zygisk.hpp"
 // ImGui
 #include "imgui.h"
