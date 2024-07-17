@@ -10,6 +10,7 @@
 #include "zygisk.hpp"
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <sys/mman.h>
 // ImG
 #include "imgui.h"
 #include "imgui_impl_android.h"
