@@ -149,7 +149,7 @@ void inputHook(void *thiz, void *event, void *msg) {
 }
 */
 hook_input(void, Input, void *thiz, void *event, void *msg) {
-    origInput(thiz, event, msg) 
+    origInput(thiz, event, msg);
     ImGui_ImplAndtoid_HandleInputEvent((AInputEvent *)thiz);
     return;
 }
